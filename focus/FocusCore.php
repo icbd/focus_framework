@@ -36,9 +36,11 @@ class FocusCore
     {
         if (($class_file = FOCUS_PATH . DS . $class_name . '.php') && is_file($class_file)) {
             include_once $class_file;
-        }
-
-        if (($class_file = APP_PATH . DS . 'controller' . DS . $class_name . '.php') && is_file($class_file)) {
+        } elseif (($class_file = APP_PATH . DS . 'controller' . DS . $class_name . '.php') && is_file($class_file)) {
+            include_once $class_file;
+        } elseif (($class_file = APP_PATH . DS . 'model' . DS . $class_name . '.php') && is_file($class_file)) {
+            include_once $class_file;
+        } elseif (($class_file = APP_PATH . DS . 'view' . DS . $class_name . '.php') && is_file($class_file)) {
             include_once $class_file;
         }
 

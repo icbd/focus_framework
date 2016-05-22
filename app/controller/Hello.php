@@ -8,7 +8,11 @@
  */
 class Hello
 {
-    public function hi(){
-        echo 'this is Hello/hi';
+    public function hi()
+    {
+        $hello = new HelloDao();
+        $name = $hello->redis->get('name');
+
+        include APP_PATH . 'view/Hello.php';
     }
 }
