@@ -2,8 +2,11 @@
 /**
  * Created by PhpStorm.
  * User: cbd
- * Date: 16/5/15
- * Time: 下午1:03
+ * Date: 16/5/22
+ * Time: 下午2:33
  */
 
-include "app/Controller.php";
+include 'define.php';
+
+$process = new FocusCore();
+$process->run();
