@@ -13,15 +13,28 @@ class FocusRouter
 
     public function __construct()
     {
-        $url = explode('/', $_SERVER['REQUEST_URI']);
-        if ('index.php' == $url[1]) {
-            $this->controller = $url[2];
-            $this->action = $url[3];
+        $this->url = parse_url($_SERVER['REQUEST_URI']);
+
+        $path = explode('/', $this->url['path']);
+        if ('index.php' == $path[1]) {
+            $path = array_slice($path, 2);
         } else {
-            $this->controller = $url[1];
-            $this->action = $url[2];
+            $path = array_slice($path, 1);
         }
 
+        $count_path = count($path);
+        if (!empty($path[0]) and !empty($path[1])) {
+            $this->controller = $path[0];
+            $this->action = $path[1];
+        } elseif (!empty($path[0]) and empty($path[1])) {
+            //action缺失, 默认index
+            $this->controller = $path[0];
+            $this->action = 'index';
+        } elseif (empty($path[0]) and empty($path[0])) {
+            //controller action都缺失, 使用config中的设定
+            $this->controller = config('ROOT_URL')['controller'];
+            $this->action = config('ROOT_URL')['action'];
+        }
     }
 
 

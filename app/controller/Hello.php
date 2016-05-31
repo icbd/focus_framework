@@ -21,11 +21,14 @@ class Hello
         require_once FOCUS_PATH . 'Twig/Autoloader.php';
         Twig_Autoloader::register();
 
-        $html = file_get_contents(APP_PATH . 'view/index.html');
-        $loader = new Twig_Loader_Array(array(
-            'index' => $html,
-        ));
-        $twig = new Twig_Environment($loader);
+        $html = file_get_contents(APP_PATH . 'view/index1.html');
+
+        if ($html) {
+            $loader = new Twig_Loader_Array(array(
+                'index' => $html,
+            ));
+            $twig = new Twig_Environment($loader);
+        }
 
 
         $helloDao = new HelloDao();
