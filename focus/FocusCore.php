@@ -9,20 +9,40 @@
 class FocusCore
 {
 
-    public static $FocusConfig;
+    public static $FocusConfig = array();
 
+
+    /**
+     * include file by DFS
+     *
+     * @param $path
+     */
+    private static function include_all($path)
+    {
+        foreach (glob("{$path}*") as $per_sub) {
+            if (is_dir($per_sub)) {
+                self::include_all($per_sub . DS);
+            } else {
+                include_once $per_sub;
+            }
+        }
+    }
+
+    /**
+     * 构造方法
+     *
+     * FocusCore constructor.
+     */
     public function __construct()
     {
         //引入全局方法
-        include 'FocusMethods.php';
+        include_once 'FocusMethods.php';
+        //引入路由器
+        include_once 'FocusRouter.php';
 
-        $config = array();
-        //引入用户自动加载目录下的所有
-        $auto_include = APP_PATH . DS . 'auto_include/';
-        foreach (glob("{$auto_include}*.php") as $per2include) {
-            include $per2include;
-        }
-        self::$FocusConfig = $config;
+        //引入用户自动加载目录下的所有(递归引入)
+        $auto_include_folder = APP_PATH . 'auto_include' . DS;
+        self::include_all($auto_include_folder);
 
         spl_autoload_register(array($this, 'autoload'));
     }
@@ -34,13 +54,9 @@ class FocusCore
      */
     private function autoload($class_name)
     {
-        if (($class_file = FOCUS_PATH . DS . $class_name . '.php') && is_file($class_file)) {
+        if (($class_file = APP_PATH . 'controller' . DS . $class_name . '.php') && is_file($class_file)) {
             include_once $class_file;
-        } elseif (($class_file = APP_PATH . DS . 'controller' . DS . $class_name . '.php') && is_file($class_file)) {
-            include_once $class_file;
-        } elseif (($class_file = APP_PATH . DS . 'model' . DS . $class_name . '.php') && is_file($class_file)) {
-            include_once $class_file;
-        } elseif (($class_file = APP_PATH . DS . 'view' . DS . $class_name . '.php') && is_file($class_file)) {
+        } elseif (($class_file = APP_PATH . 'model' . DS . $class_name . '.php') && is_file($class_file)) {
             include_once $class_file;
         }
 
@@ -51,7 +67,6 @@ class FocusCore
         $router = new FocusRouter();
         $controllerObj = new $router->controller;
         $actionName = $router->action;
-
         $controllerObj->$actionName();
     }
 }
