@@ -8,20 +8,12 @@
  */
 class Hello
 {
-    public function hi()
-    {
-        $hello = new HelloDao();
-        $name = $hello->redis->get('name');
-
-        include APP_PATH . 'view/Hello.php';
-    }
-
     public function index()
     {
         require_once FOCUS_PATH . 'Twig/Autoloader.php';
         Twig_Autoloader::register();
 
-        $html = file_get_contents(APP_PATH . 'view/index1.html');
+        $html = file_get_contents(APP_PATH . 'view/index.html');
 
         if ($html) {
             $loader = new Twig_Loader_Array(array(

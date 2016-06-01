@@ -11,6 +11,6 @@ config(
     'ROOT_URL',
     array(
         'controller' => 'Hello',
-        'action' => 'hi'
+        'action' => 'index'
     )
 );

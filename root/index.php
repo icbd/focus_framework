@@ -6,7 +6,7 @@
  * Time: 下午2:33
  */
 
-include 'define.php';
+include '../define.php';
 
 $process = new FocusCore();
 $process->run();
